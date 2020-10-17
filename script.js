@@ -162,6 +162,7 @@ const renderTicketAll = (ticketsAll) => {
   }
 };
 
+// Вспомогательная функция для функций рендера билетов
 const renderTicket = (data, date) => {
   const cheapTicketAll = JSON.parse(data).best_prices;
   const cheapTicketDay = cheapTicketAll.filter((item) => {

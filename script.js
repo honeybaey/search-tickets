@@ -16,7 +16,7 @@ const citiesApi = "dataForm/cities.json",
 
 let cities = [];
 
-const getData = (url, callback) => {
+const getData = (url, callback, reject) => {
   const request = new XMLHttpRequest();
 
   request.open("GET", url);
@@ -26,7 +26,7 @@ const getData = (url, callback) => {
     if (request.status === 200) {
       callback(request.response);
     } else {
-      console.error(request.status);
+      reject(request.status);
     }
   });
   request.send();

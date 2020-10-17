@@ -203,6 +203,15 @@ formSearch.addEventListener("submit", (e) => {
   });
 });
 
-getData(proxy + citiesApi, (data) => {
+getData(citiesApi, (data) => {
   cities = JSON.parse(data).filter((item) => item.name);
+
+  cities.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    } else if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  });
 });

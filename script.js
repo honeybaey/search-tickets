@@ -95,10 +95,70 @@ const getLink = (data) => {
 
   return link;
 };
+
+// Создает блок с билетами
+const createCard = (data) => {
+  const ticket = document.createElement("article");
+  ticket.classList.add("ticket");
+
+  let fragment = "";
+
+  if (data) {
+    fragment = `
+      <h3 class="agent">${data.gate}</h3>
+      <div class="ticket__wrapper">
+        <div class="left-side">
+          <a target="_blank" href=${getLink(
+            data
+          )} class="button button__buy">Купить
+            за ${data.value}&nbsp;₽</a>
+        </div>
+        <div class="right-side">
+          <div class="block-left">
+            <div class="city__from">Город отправления:
+              <span class="city__name">${getCityName(data.origin)}</span>
+            </div>
+            <div class="date">${getDate(data.depart_date)}</div>
+          </div>
+      
+          <div class="block-right">
+            <div class="city__to">Город назначения:
+              <span class="city__name">${getCityName(data.destination)}</span>
+            </div>
+            <div class="changes">${getChanges(data.number_of_changes)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    fragment = "<h3>К сожалению на выбранную дату билеты отсутствуют</h3>";
+  }
+
+  ticket.insertAdjacentHTML("afterbegin", fragment);
+
+  return ticket;
 };
 
-const renderCheapAll = (ticketsAll) => {
-  console.log(ticketsAll);
+// Рендерит блок с самым выгодным билетом на дату
+const renderTicketDay = (ticketsDay) => {
+  cheapestTicket.style.display = "block";
+  cheapestTicket.innerHTML = "<h2>Самый выгодный билет на выбранную дату</h2>";
+
+  const ticketCard = createCard(ticketsDay[0]);
+  cheapestTicket.append(ticketCard);
+};
+
+// Рендерит блок со списком выгодных билетов на другие даты
+const renderTicketAll = (ticketsAll) => {
+  cheapTickets.style.display = "block";
+  cheapTickets.innerHTML = "<h2>Самые выгодные билеты на другие даты</h2>";
+
+  ticketsAll.sort((a, b) => a.value - b.value);
+
+  for (let i = 0; i < ticketsAll.length && i < maxTickets; i++) {
+    const ticket = createCard(ticketsAll[i]);
+    cheapTickets.append(ticket);
+  }
 };
 
 const renderCheap = (data, date) => {

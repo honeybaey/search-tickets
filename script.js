@@ -32,6 +32,7 @@ const getData = (url, callback, reject) => {
   request.send();
 };
 
+// Показывает выпадающий список городов в инпутах
 const showCity = (input, list) => {
   list.textContent = "";
 

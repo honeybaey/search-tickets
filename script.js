@@ -1,15 +1,18 @@
-const formSearch = document.querySelector(".form-search");
-inputCitiesFrom = formSearch.querySelector(".input__cities-from");
-dropdownCitiesFrom = formSearch.querySelector(".dropdown__cities-from");
-inputCitiesTo = formSearch.querySelector(".input__cities-to");
-dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to");
-inputDateDepart = formSearch.querySelector(".input__date-depart");
+const formSearch = document.querySelector(".form-search"),
+  inputCitiesFrom = formSearch.querySelector(".input__cities-from"),
+  dropdownCitiesFrom = formSearch.querySelector(".dropdown__cities-from"),
+  inputCitiesTo = formSearch.querySelector(".input__cities-to"),
+  dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to"),
+  inputDateDepart = formSearch.querySelector(".input__date-depart"),
+  cheapestTicket = document.getElementById("cheapest-ticket"),
+  cheapTickets = document.getElementById("cheap-tickets");
 
-const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
-// const citiesApi = "dataForm/cities.json";
-const calendar = "http://min-prices.aviasales.ru/calendar_preload";
-const proxy = "https://cors-anywhere.herokuapp.com/";
-const apiKey = "5cea2ec1cf27ceda36488a8eae101b8b";
+// const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
+const citiesApi = "dataForm/cities.json",
+  calendar = "http://min-prices.aviasales.ru/calendar_preload",
+  proxy = "https://cors-anywhere.herokuapp.com/",
+  apiKey = "5cea2ec1cf27ceda36488a8eae101b8b",
+  maxTickets = 10;
 
 let cities = [];
 

@@ -56,8 +56,45 @@ const selectCity = (e, input, list) => {
   }
 };
 
-const renderCheapDay = (ticketsDay) => {
-  console.log(ticketsDay);
+// Рендерит количество пересадок на карточке билета
+const getChanges = (num) => {
+  if (num) {
+    return num === 1 ? "С одной пересадкой" : "с двумя пересадками";
+  } else {
+    return "Без пересадок";
+  }
+};
+
+// Рендерит названия городов на карточке билета
+const getCityName = (code) => {
+  const objCity = cities.find((item) => item.code === code);
+  return objCity.name;
+};
+
+// Рендерит дату на карточке билета
+const getDate = (date) => {
+  return new Date(date).toLocaleString("ru", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+};
+
+// Генерирует ссылку на этот рейс
+const getLink = (data) => {
+  const date = new Date(data.depart_date);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+
+  const dayStr = day < 10 ? `0${day}` : day;
+  const monthStr = month < 10 ? `0${month}` : month;
+
+  let link = `https://www.aviasales.ru/search/${data.origin}${dayStr}${monthStr}${data.destination}1`;
+
+  return link;
+};
 };
 
 const renderCheapAll = (ticketsAll) => {

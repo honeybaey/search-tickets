@@ -206,6 +206,7 @@ formSearch.addEventListener("submit", (e) => {
   });
 });
 
+// Получение списка городов
 getData(citiesApi, (data) => {
   cities = JSON.parse(data).filter((item) => item.name);
 

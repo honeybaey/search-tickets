@@ -194,16 +194,23 @@ formSearch.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const formData = {
-    from: cities.find((item) => inputCitiesFrom.value === item.name).code,
-    to: cities.find((item) => inputCitiesTo.value === item.name).code,
+    from: cities.find((item) => inputCitiesFrom.value === item.name),
+    to: cities.find((item) => inputCitiesTo.value === item.name),
     date: inputDateDepart.value,
   };
 
-  const requestData = `?depart_date=${formData.date}&origin=${formData.from}&destination=${formData.to}&one_way=true&token=${apiKey}`;
+  if (formData.from && formData.to) {
+    const requestData = `?depart_date=${formData.date}&origin=${formData.from.code}&destination=${formData.to.code}&one_way=true&token=${apiKey}`;
 
-  getData(calendar + requestData, (response) => {
-    renderCheap(response, formData.date);
-  });
+    getData(calendar + requestData, (response) => {
+      renderTicket(response, formData.date);
+    }, (error) => {
+      alert("В этом направлении рейсы отсутствуют")
+      console.error(`Ошибка: ${error}`)
+    });
+  } else {
+    alert("Введите корректное название города");
+  }
 });
 
 // Получение списка городов

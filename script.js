@@ -161,14 +161,14 @@ const renderTicketAll = (ticketsAll) => {
   }
 };
 
-const renderCheap = (data, date) => {
+const renderTicket = (data, date) => {
   const cheapTicketAll = JSON.parse(data).best_prices;
   const cheapTicketDay = cheapTicketAll.filter((item) => {
     return item.depart_date === date;
   });
 
-  renderCheapDay(cheapTicketDay);
-  renderCheapAll(cheapTicketAll);
+  renderTicketDay(cheapTicketDay);
+  renderTicketAll(cheapTicketAll);
 };
 
 inputCitiesFrom.addEventListener("input", () => {

@@ -189,6 +189,7 @@ dropdownCitiesTo.addEventListener("click", (e) => {
   selectCity(e, inputCitiesTo, dropdownCitiesTo);
 });
 
+// Отправка запроса к API
 formSearch.addEventListener("submit", (e) => {
   e.preventDefault();
 

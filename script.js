@@ -173,6 +173,13 @@ const renderTicket = (data, date) => {
   renderTicketAll(cheapTicketAll);
 };
 
+// Показ текста ошибки на странице
+const createErrorNotification = (text) => {
+  cheapestTicket.style.display = "block";
+  cheapestTicket.innerHTML = `<h2>${text}</h2>`;
+  return cheapestTicket;
+};
+
 inputCitiesFrom.addEventListener("input", () => {
   showCity(inputCitiesFrom, dropdownCitiesFrom);
 });
@@ -202,14 +209,18 @@ formSearch.addEventListener("submit", (e) => {
   if (formData.from && formData.to) {
     const requestData = `?depart_date=${formData.date}&origin=${formData.from.code}&destination=${formData.to.code}&one_way=true&token=${apiKey}`;
 
-    getData(calendar + requestData, (response) => {
-      renderTicket(response, formData.date);
-    }, (error) => {
-      alert("В этом направлении рейсы отсутствуют")
-      console.error(`Ошибка: ${error}`)
-    });
+    getData(
+      calendar + requestData,
+      (response) => {
+        renderTicket(response, formData.date);
+      },
+      (error) => {
+        createErrorNotification("В этом направлении рейсы отсутствуют");
+        console.error(`Ошибка: ${error}`);
+      }
+    );
   } else {
-    alert("Введите корректное название города");
+    createErrorNotification("Введите корректное название города");
   }
 });
 

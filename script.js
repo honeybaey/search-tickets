@@ -102,7 +102,7 @@ const getLink = (data) => {
 
 // Создает блок с билетами
 const createCard = (data) => {
-  const ticket = document.createElement("article");
+  const ticket = document.createElement("li");
   ticket.classList.add("ticket");
 
   let fragment = "";
@@ -112,9 +112,7 @@ const createCard = (data) => {
       <h3 class="agent">${data.gate}</h3>
       <div class="ticket__wrapper">
         <div class="left-side">
-          <a target="_blank" href=${getLink(
-            data
-          )} class="button button__buy">Купить
+          <a target="_blank" href=${getLink(data)} class="button button__buy">Купить
             за ${data.value}&nbsp;₽</a>
         </div>
         <div class="right-side">
@@ -145,23 +143,31 @@ const createCard = (data) => {
 
 // Рендерит блок с самым выгодным билетом на дату
 const renderTicketDay = (ticketsDay) => {
+  const cheapestTicketList = document.createElement('ul')
+  
   cheapestTicket.style.display = "block";
   cheapestTicket.innerHTML = "<h2>Самый выгодный билет на выбранную дату</h2>";
+  cheapestTicketList.setAttribute('id', 'cheapestTicketList')
+  cheapestTicket.append(cheapestTicketList)
 
   const ticketCard = createCard(ticketsDay[0]);
-  cheapestTicket.append(ticketCard);
+  cheapestTicketList.append(ticketCard);
 };
 
 // Рендерит блок со списком выгодных билетов на другие даты
 const renderTicketAll = (ticketsAll) => {
+  const cheapTicketsList = document.createElement('ul')
+  
   cheapTickets.style.display = "block";
   cheapTickets.innerHTML = "<h2>Самые выгодные билеты на другие даты</h2>";
+  cheapTicketsList.setAttribute('id', 'cheapTicketsList')
+  cheapTickets.append(cheapTicketsList)
 
   ticketsAll.sort((a, b) => a.value - b.value);
 
   for (let i = 0; i < ticketsAll.length && i < maxTickets; i++) {
-    const ticket = createCard(ticketsAll[i]);
-    cheapTickets.append(ticket);
+    const ticketCard = createCard(ticketsAll[i]);
+    cheapTicketsList.append(ticketCard);
   }
 };
 

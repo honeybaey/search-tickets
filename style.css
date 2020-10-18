@@ -236,7 +236,7 @@ input {
   font-size: 18px;
   font-weight: 600;
 }
-.block__ticket {
+.wrapper__cheap-tickets {
   margin: 50px 0;
 }
 @media (max-width: 768px) {

@@ -4,8 +4,11 @@ const formSearch = document.querySelector(".form-search"),
   inputCitiesTo = formSearch.querySelector(".input__cities-to"),
   dropdownCitiesTo = formSearch.querySelector(".dropdown__cities-to"),
   inputDateDepart = formSearch.querySelector(".input__date-depart"),
-  cheapestTicket = document.getElementById("cheapest-ticket"),
-  cheapTickets = document.getElementById("cheap-tickets");
+  cheapestTicket = document.getElementById("cheapestTicket"),
+  cheapTickets = document.getElementById("cheapTickets");
+
+  cheapestTicketList = document.getElementById("cheapestTicketList");
+  cheapTicketsList = document.getElementById("cheapTicketsList");
 
 // const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
 const citiesApi = "dataForm/cities.json",

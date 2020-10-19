@@ -236,7 +236,7 @@ input {
   font-size: 18px;
   font-weight: 600;
 }
-.wrapper__cheap-tickets {
+.cheap-tickets {
   margin: 50px 0;
 }
 @media (max-width: 768px) {
@@ -263,4 +263,8 @@ input {
   .block-left {
     margin-bottom: 20px;
   }
+}
+
+.input__date-depart {
+  cursor: pointer;
 }

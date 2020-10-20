@@ -7,11 +7,10 @@ const formSearch = document.querySelector(".form-search"),
   cheapestTicket = document.getElementById("cheapestTicket"),
   cheapTickets = document.getElementById("cheapTickets");
 
-  cheapestTicketList = document.getElementById("cheapestTicketList");
-  cheapTicketsList = document.getElementById("cheapTicketsList");
+cheapestTicketList = document.getElementById("cheapestTicketList");
+cheapTicketsList = document.getElementById("cheapTicketsList");
 
-// const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
-const citiesApi = "dataForm/cities.json",
+const citiesApi = "http://api.travelpayouts.com/data/ru/cities.json";
   calendar = "http://min-prices.aviasales.ru/calendar_preload",
   proxy = "https://cors-anywhere.herokuapp.com/",
   apiKey = "5cea2ec1cf27ceda36488a8eae101b8b",
@@ -19,20 +18,15 @@ const citiesApi = "dataForm/cities.json",
 
 let cities = [];
 
-const getData = (url, callback, reject) => {
-  const request = new XMLHttpRequest();
+const getData = async (url) => {
+  const res = await fetch(url);
+  const body = await res.json();
 
-  request.open("GET", url);
-  request.addEventListener("readystatechange", () => {
-    if (request.readyState !== 4) return;
-
-    if (request.status === 200) {
-      callback(request.response);
-    } else {
-      reject(request.status);
-    }
-  });
-  request.send();
+  if (res.status === 400) {
+    createErrorNotification("В данном направлении рейсы отсутствуют");
+  } else {
+    return body;
+  }
 };
 
 // Показывает выпадающий список городов в инпутах
@@ -112,7 +106,9 @@ const createCard = (data) => {
       <h3 class="agent">${data.gate}</h3>
       <div class="ticket__wrapper">
         <div class="left-side">
-          <a target="_blank" href=${getLink(data)} class="button button__buy">Купить
+          <a target="_blank" href=${getLink(
+            data
+          )} class="button button__buy">Купить
             за ${data.value}&nbsp;₽</a>
         </div>
         <div class="right-side">
@@ -143,12 +139,12 @@ const createCard = (data) => {
 
 // Рендерит блок с самым выгодным билетом на дату
 const renderTicketDay = (ticketsDay) => {
-  const cheapestTicketList = document.createElement('ul')
-  
+  const cheapestTicketList = document.createElement("ul");
+
   cheapestTicket.style.display = "block";
   cheapestTicket.innerHTML = "<h2>Самый выгодный билет на выбранную дату</h2>";
-  cheapestTicketList.setAttribute('id', 'cheapestTicketList')
-  cheapestTicket.append(cheapestTicketList)
+  cheapestTicketList.setAttribute("id", "cheapestTicketList");
+  cheapestTicket.append(cheapestTicketList);
 
   const ticketCard = createCard(ticketsDay[0]);
   cheapestTicketList.append(ticketCard);
@@ -156,12 +152,12 @@ const renderTicketDay = (ticketsDay) => {
 
 // Рендерит блок со списком выгодных билетов на другие даты
 const renderTicketAll = (ticketsAll) => {
-  const cheapTicketsList = document.createElement('ul')
-  
+  const cheapTicketsList = document.createElement("ul");
+
   cheapTickets.style.display = "block";
   cheapTickets.innerHTML = "<h2>Самые выгодные билеты на другие даты</h2>";
-  cheapTicketsList.setAttribute('id', 'cheapTicketsList')
-  cheapTickets.append(cheapTicketsList)
+  cheapTicketsList.setAttribute("id", "cheapTicketsList");
+  cheapTickets.append(cheapTicketsList);
 
   ticketsAll.sort((a, b) => a.value - b.value);
 
@@ -173,7 +169,7 @@ const renderTicketAll = (ticketsAll) => {
 
 // Вспомогательная функция для функций рендера билетов
 const renderTicket = (data, date) => {
-  const cheapTicketAll = JSON.parse(data).best_prices;
+  const cheapTicketAll = data.best_prices;
   const cheapTicketDay = cheapTicketAll.filter((item) => {
     return item.depart_date === date;
   });
@@ -186,6 +182,7 @@ const renderTicket = (data, date) => {
 const createErrorNotification = (text) => {
   cheapestTicket.style.display = "block";
   cheapestTicket.innerHTML = `<h2>${text}</h2>`;
+  cheapTickets.innerHTML = "";
   return cheapestTicket;
 };
 
@@ -218,24 +215,17 @@ formSearch.addEventListener("submit", (e) => {
   if (formData.from && formData.to) {
     const requestData = `?depart_date=${formData.date}&origin=${formData.from.code}&destination=${formData.to.code}&one_way=true&token=${apiKey}`;
 
-    getData(
-      calendar + requestData,
-      (response) => {
-        renderTicket(response, formData.date);
-      },
-      (error) => {
-        createErrorNotification("В этом направлении рейсы отсутствуют");
-        console.error(`Ошибка: ${error}`);
-      }
-    );
+    getData(calendar + requestData).then((response) => {
+      renderTicket(response, formData.date);
+    });
   } else {
     createErrorNotification("Введите корректное название города");
   }
 });
 
 // Получение списка городов
-getData(citiesApi, (data) => {
-  cities = JSON.parse(data).filter((item) => item.name);
+getData(proxy + citiesApi).then((data) => {
+  cities = data.filter((item) => item.name);
 
   cities.sort((a, b) => {
     if (a.name > b.name) {
